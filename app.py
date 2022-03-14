@@ -1,3 +1,11 @@
 from logsmith import log
 
-log().CRITICAL("S")
+log().INFO("Information")
+
+log().WARN("Warning")
+
+log().SUCCESS("Success!")
+
+log().FAILURE("Failed")
+
+log().CRITICAL("Critical")
