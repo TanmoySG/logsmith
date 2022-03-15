@@ -152,5 +152,5 @@ cython_debug/
 #.idea/
 
 # VS code
-
+pypi.token
 .vscode/*
