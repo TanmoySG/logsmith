@@ -12,5 +12,5 @@ sleep(2)
 log.SUCCESS("Success!")
 sleep(2)
 log.FAILURE("Failed")
-sleep(2)
+
 log.CRITICAL("Critical")
