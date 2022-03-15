@@ -21,6 +21,8 @@ setup(
     ],
     packages=find_packages(),
     keywords=['imports', 'logs', 'python', 'logging'],
-    install_requires=[],
+    install_requires=[
+        'termcolor==1.1.0'
+    ],
     zip_safe=False
 )
