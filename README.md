@@ -1,6 +1,8 @@
 # logsmith
 A Logging Library for Python
 
+![](./Screenshot%202022-03-15%20at%2012.09.24%20PM.png)
+
 ## Install
 
 ```
@@ -40,5 +42,3 @@ log.configure(ENV="DEV", logfile="logs", console_only=True)
 
 log.INFO("Information")
 ```
-
-## 
