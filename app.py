@@ -1,11 +1,16 @@
+from time import sleep
 from logsmith import log
 
-log().INFO("Information")
+log = log()
+log.configure(ENV="DEV", logfile="logs", console_only=True)
 
-log().WARN("Warning")
 
-log().SUCCESS("Success!")
-
-log().FAILURE("Failed")
-
-log().CRITICAL("Critical")
+log.INFO("Information")
+sleep(2)
+log.WARN("Warning")
+sleep(2)
+log.SUCCESS("Success!")
+sleep(2)
+log.FAILURE("Failed")
+sleep(2)
+log.CRITICAL("Critical")
