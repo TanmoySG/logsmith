@@ -44,7 +44,7 @@ class File:
         File.JSON provides a common interface for all JSON file operations.
         """
 
-        def read(filepath: str):
+        def read(filepath: str) -> dict:
             """
             read() provides the utility to read JSON files 
 
