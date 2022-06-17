@@ -1,15 +1,44 @@
-from time import sleep
-from logsmith import log
+# # from time import sleep
+# # from logsmith import log
 
-log = log()
+# # log = log()
 
-log.configure(logfile="logs", console_only=False)
+# # log.configure(logfile="logs", console_only=False)
 
-log.INFO("Information")
-log.WARN("Warning")
+# # log.INFO("Information")
+# # log.WARN("Warning")
 
-log.configure(ENV="DEV", logfile="logs", console_only=True)
+# # log.configure(ENV="DEV", logfile="logs", console_only=True)
 
-log.SUCCESS("Success!")
-log.FAILURE("Failed")
-log.CRITICAL("Critical")
+# # log.SUCCESS("Success!")
+# # log.FAILURE("Failed")
+# # log.CRITICAL("Critical")
+
+# sample = {
+#     "name": "tanmoy",
+#     "age": "22",
+#     "gen": "F",
+#     "pos" : "top"
+# }
+
+# # template_String = "My Name is {name} gender {gen}".format(**sample)
+
+# # def template_filler(x):
+# #     return "My Name is {name} gender {gen}".format(**x)
+
+# # temp_helper = template_filler
+
+# # print(temp_helper(sample))
+
+# # sample_Arr = ("Tanmoy", "24")
+
+# # tmplt_str = "My Name is {0}, age {1}".format(*sample_Arr)
+
+# # print(tmplt_str)
+
+# print(sample.get("pos", "bot"))
+
+
+from logsmith.handlers.utilities import File
+
+print(File.JSON.read("/workspaces/logsmith/configs/log.log"))
