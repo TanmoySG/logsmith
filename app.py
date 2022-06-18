@@ -41,5 +41,15 @@
 
 from logsmith.packages.utilities import File, Terminal, String
 
-Terminal(color="white", bgcolor="green").log(String.Format(text="str").fit(),File.JSON.read("/workspaces/logsmith/configs/config.json"))
+loglevel = String.Format(text="WARN").fit().enclose(start="[", end="]")
 
+
+
+logLevel = Terminal.Format(loglevel.text).color(color="white")
+
+log = Terminal.Format(File.JSON.read(
+    "/workspaces/logsmith/configs/config.json")).toString()
+
+logTBP = f"{logLevel} {log}"
+
+Terminal.log(logTBP)

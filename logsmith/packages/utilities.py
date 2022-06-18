@@ -22,7 +22,10 @@ class String:
 
             self.text = text
 
-        def fit(self, width: int = 8) -> str:
+        def __str__(self) -> str:
+            return self.text
+
+        def fit(self, width: int = 8):
             """
             fit() allows the string to be fit into a given width
 
@@ -33,7 +36,24 @@ class String:
                 The string of desired length
             """
 
-            return self.text.ljust(width)[:width]
+            self.text = self.text.ljust(width)[:width]
+            return self
+
+        def enclose(self, within=None, start=None, end=None):
+            """
+            enclose() allows the string to be enclosed by characters
+
+            Args:
+                within [str] : the characters that encloses the string on both ends
+                start  [str] : the character to enclose the start of the string. start = within, when using within.
+                end    [str] : the character to enclose the end of the string. end = within, when using within.
+            """
+            if within != None:
+                start = within
+                end = within
+
+            self.text = f"{start}{self.text}{end}"
+            return self
 
     class Template:
         """
@@ -50,7 +70,7 @@ class String:
 
             self.template = template
             pass
-        
+
         def fill(self, data):
             """
             Method to fill the data in placeholders of the template
@@ -105,28 +125,46 @@ class Terminal:
     Terminal Utility provides a Common Interface for all Terminal related 
     """
 
-    def __init__(self, color="white", bgcolor=None) -> None:
-        """
-        Constructor
-
-        Args:
-            color [str] : color of string
-            bgcolor [str] : color of background of string
-        """
-
-        self.color = color
-        self.bgcolor = f"on_{bgcolor}" if bgcolor != None else None
-        pass
-
-    def log(self, level, log) -> None:
+    def log(log) -> None:
         """
         log() method prints the log with the defined colors and bgcolor
 
         Args:
             level [str] : level of the log. Level is printed in color.
-            log [any] : data to be logged on the terminal. Can be of any type, converted to string pre-printing
+            log   [any] : data to be logged on the terminal. Can be of any type, converted to string pre-printing
         """
 
         log = str(log)
-        level = f"[{level}]"
-        print(colored(text=level, color=self.color, on_color=self.bgcolor), log)
+        # level = f"[{level}]" use this later
+        print(log)
+
+    class Format:
+        def __init__(self, text: str) -> None:
+            """
+            Constructor to Initiate with text to be formatted for terminal
+
+            Args:
+                text [str] : text to be formatted
+            """
+
+            self.text = text
+            pass
+
+        def color(self, color="white", bgcolor=None) -> str:
+            """
+            color() method to format with color 
+
+            Args:
+                color   [str] : color of string
+                bgcolor [str] : color of background of string
+
+            Returns:
+                Colored and Formatted String that can be printed on terminal
+            """
+
+            color = color
+            bgcolor = f"on_{bgcolor}" if bgcolor != None else None
+            return colored(text=self.text, color=color, on_color=bgcolor)
+
+        def toString(self) -> str:
+            return str(self.text)
