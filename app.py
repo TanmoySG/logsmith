@@ -39,6 +39,7 @@
 # print(sample.get("pos", "bot"))
 
 
-from logsmith.handlers.utilities import File
+from logsmith.packages.utilities import File, Terminal, String
 
-print(File.JSON.read("/workspaces/logsmith/configs/log.log"))
+Terminal(color="white", bgcolor="green").log(String.Format(text="str").fit(),File.JSON.read("/workspaces/logsmith/configs/config.json"))
+

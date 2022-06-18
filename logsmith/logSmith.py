@@ -1,5 +1,5 @@
-from handlers.constants import DefaultLogStatementPattern, DefaultConfigurations, LogFormats
-from handlers.utilities import StringTemplate, File
+from packages.constants import DefaultLogStatementPattern, DefaultConfigurations, LogFormats
+from packages.utilities import String, File
 
 from termcolor import colored
 import datetime
@@ -28,18 +28,18 @@ class log:
         self.logStatementPattern = configurations.get("logStatementPattern", DefaultConfigurations.logStatementPattern)
         self.monitorLogging = configurations.get("monitorLogging", DefaultConfigurations.monitorLogging)
         # self.monitorConfigs = getMonitorConfigs(configurations)
-        self.compiledLogPattern = StringTemplate(self.logStatementPattern)
+        self.compiledLogPattern = String.Template(self.logStatementPattern)
         pass
 
     def configure(self,  configurations: dict):
-        self.env = configurations.get("env" , DefaultConfigurations.env)
-        self.logfile = configurations.get("logfile",  DefaultConfigurations.logfile)
-        self.console_only = configurations.get("console_only", DefaultConfigurations.console_only)
-        self.logFormat = configurations.get("logFormat", DefaultConfigurations.logFormat)
-        self.logStatementPattern = configurations.get("logStatementPattern", DefaultConfigurations.logStatementPattern)
-        self.monitorLogging = configurations.get("monitorLogging", DefaultConfigurations.monitorLogging)
+        self.env = configurations.get("env" , self.env)
+        self.logfile = configurations.get("logfile",  self.logfile)
+        self.console_only = configurations.get("console_only", self.console_only)
+        self.logFormat = configurations.get("logFormat", self.logFormat)
+        self.logStatementPattern = configurations.get("logStatementPattern", self.logStatementPattern)
+        self.monitorLogging = configurations.get("monitorLogging", self.monitorLogging)
         # self.monitorConfigs = getMonitorConfigs(configurations)
-        self.compiledLogPattern = StringTemplate(self.logStatementPattern)
+        self.compiledLogPattern = String.Template(self.logStatementPattern)
 
     def fetchConfigFromFile(self, filepath : str):
         configurations = File.JSON.read(filepath)
@@ -50,7 +50,7 @@ class log:
         self.logStatementPattern = configurations.get("logStatementPattern", DefaultConfigurations.logStatementPattern)
         self.monitorLogging = configurations.get("monitorLogging", DefaultConfigurations.monitorLogging)
         # self.monitorConfigs = getMonitorConfigs(configurations)
-        self.compiledLogPattern = StringTemplate(self.logStatementPattern)
+        self.compiledLogPattern = String.Template(self.logStatementPattern)
         
 
     def INFO(self, message):
