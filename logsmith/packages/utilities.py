@@ -14,12 +14,12 @@ class String:
 
         def __init__(self, text: str) -> None:
             """
-            Constructor 
+            Constructor to pass formatable string
 
             Args:
                 text [str] : text to be formatted
             """
-            
+
             self.text = text
 
         def fit(self, width: int = 8) -> str:
@@ -49,8 +49,8 @@ class String:
             """
 
             self.template = template
-            return self
-
+            pass
+        
         def fill(self, data):
             """
             Method to fill the data in placeholders of the template
