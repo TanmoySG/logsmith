@@ -23,6 +23,9 @@ class String:
             self.text = text
 
         def __str__(self) -> str:
+            """
+            When the object of String.Format class is passed through str() method the value of text is returned
+            """
             return self.text
 
         def fit(self, width: int = 8):
@@ -54,6 +57,15 @@ class String:
 
             self.text = f"{start}{self.text}{end}"
             return self
+
+        def finalize(self) -> str:
+            """
+            finalize() can be called once all the string operations are complete. It returns the string.
+
+            Returns:
+                string (text)
+            """
+            return self.text
 
     class Template:
         """
