@@ -105,12 +105,33 @@ class File:
     File utility provides a common gateway to all file based operations.
     """
 
+    class LOG:
+        def isLOG(self, filepath: str) -> bool:
+            if filepath.lower().endswith(".log"):
+                return True
+            return False
+
+        def read(self, filepath: str) -> list:
+            if not self.isLOG(filepath=filepath):
+                raise ValueError(f"Only .log file supported, got {filepath}")
+            with open(filepath) as log_file:
+                data = [line.rstrip() for line in log_file]
+            return data
+
+        def write(self, filepath: str, data: any):
+            pass
+
     class JSON:
         """
         File.JSON provides a common interface for all JSON file operations.
         """
 
-        def read(filepath: str) -> dict:
+        def isJSON(self, filepath: str) -> bool:
+            if filepath.lower().endswith(".json"):
+                return True
+            return False
+
+        def read(self, filepath: str) -> dict:
             """
             read() provides the utility to read JSON files 
 
@@ -124,8 +145,8 @@ class File:
                 ValueError if File is not of type JSON
             """
 
-            if not filepath.lower().endswith(".json"):
-                raise ValueError(f"Only JSON file supported, got {filepath}")
+            if not self.isJSON(filepath=filepath):
+                raise ValueError(f"Only .json file supported, got {filepath}")
             data = {}
             with open(filepath) as json_file:
                 data = json.load(json_file)
