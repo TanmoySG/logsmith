@@ -139,6 +139,7 @@ class File:
 
             if not self.isLOG(filepath=filepath):
                 raise ValueError(f"Only .log file supported, got {filepath}")
+                
             with open(filepath) as log_file:
                 data = [line.rstrip() for line in log_file]
             return data
@@ -149,12 +150,13 @@ class File:
 
             Args:
                 filepath [str] : path to file
-                data [any] : data to be written
+                data     [any] : data to be written
             """
 
             if not self.isLOG(filepath=filepath):
                 raise ValueError(f"Only .log file supported, got {filepath}")
-            lines = [data] if type(data) == str else data
+
+            lines = data if type(data) in [list, tuple] else [data]
             with open(file=filepath, mode="a+") as logfile:
                 for line in lines:
                     logfile.write(f"{line}\n")
