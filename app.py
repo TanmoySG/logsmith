@@ -54,4 +54,7 @@ from logsmith.packages.utilities import File, Terminal, String
 
 # Terminal.log(logTBP)
 
-print(File.LOG().read("/workspaces/logsmith/configs/log.log"))
+# print(File.LOG().read("/workspaces/logsmith/configs/log.log"))
+
+File.LOG().write("/workspaces/logsmith/configs/log.log", data=["line1", "line2"] )
+File.LOG().write("/workspaces/logsmith/configs/log.log", data="what?")

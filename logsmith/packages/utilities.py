@@ -51,6 +51,7 @@ class String:
                 start  [str] : the character to enclose the start of the string. start = within, when using within.
                 end    [str] : the character to enclose the end of the string. end = within, when using within.
             """
+
             if within != None:
                 start = within
                 end = within
@@ -106,12 +107,36 @@ class File:
     """
 
     class LOG:
+        """
+        File.LOG provides a common interface for all LOG file operations
+        """
+
         def isLOG(self, filepath: str) -> bool:
+            """
+            isLOG() provides utility to check if given file is .log or not
+
+            Args:
+                filepath [str] :  path to the file
+
+            Returns:
+                Boolean value of true or false
+            """
+
             if filepath.lower().endswith(".log"):
                 return True
             return False
 
         def read(self, filepath: str) -> list:
+            """
+            read() provides the interface to read a .log file
+
+            Args:
+                filepath [str] : path to file
+            
+            Returns:
+                A list with lines from the file
+            """
+
             if not self.isLOG(filepath=filepath):
                 raise ValueError(f"Only .log file supported, got {filepath}")
             with open(filepath) as log_file:
@@ -119,7 +144,20 @@ class File:
             return data
 
         def write(self, filepath: str, data: any):
-            pass
+            """
+            write() provides the interface to write to a .log file (in append mode). It creates the file if it doesn't exists.
+
+            Args:
+                filepath [str] : path to file
+                data [any] : data to be written
+            """
+
+            if not self.isLOG(filepath=filepath):
+                raise ValueError(f"Only .log file supported, got {filepath}")
+            lines = [data] if type(data) == str else data
+            with open(file=filepath, mode="a+") as logfile:
+                for line in lines:
+                    logfile.write(f"{line}\n")
 
     class JSON:
         """
@@ -127,6 +165,15 @@ class File:
         """
 
         def isJSON(self, filepath: str) -> bool:
+            """
+            isJSON() provides utility to check if given file is json or not
+
+            Args:
+                filepath [str] :  path to the JSON file
+
+            Returns:
+                Boolean value of true or false
+            """
             if filepath.lower().endswith(".json"):
                 return True
             return False
@@ -168,7 +215,6 @@ class Terminal:
         """
 
         log = str(log)
-        # level = f"[{level}]" use this later
         print(log)
 
     class Format:
@@ -200,4 +246,10 @@ class Terminal:
             return colored(text=self.text, color=color, on_color=bgcolor)
 
         def toString(self) -> str:
+            """
+            toString() method returns the value of the loggable string when called on the object
+
+            Returns:
+                value of text
+            """
             return str(self.text)
