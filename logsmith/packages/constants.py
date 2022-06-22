@@ -2,7 +2,16 @@ from types import SimpleNamespace
 
 DefaultLogStatementPattern = "[{timestamp}] {message}"
 
-
+ColorModes = SimpleNamespace(
+    **{
+        "WARN": "yellow",
+        "INFO": "blue",
+        "SUCCESS": "green",
+        "FAILURE": "red",
+        "CRITICAL": "grey",
+        "CUSTOM" : "white"
+    }
+)
 
 LogLevels = SimpleNamespace(
     **{

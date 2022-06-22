@@ -39,24 +39,25 @@
 # print(sample.get("pos", "bot"))
 
 
-from logsmith.packages.utilities import File, Terminal, String
-from logsmith.packages.logging import LOG, transform
+# from logsmith.packages.utilities import File, Terminal, String
+# from logsmith.packages.logging import LOG, transform
 
-# sampfp = "/workspaces/logsmith/configs/config.json"
+# # sampfp = "/workspaces/logsmith/configs/config.json"
 
-# loglevel = String.Format(text="WARN").fit().enclose(
-#     start="[", end="]").finalize()
+# # loglevel = String.Format(text="WARN").fit().enclose(
+# #     start="[", end="]").finalize()
 
-# logLevel = Terminal.Format(loglevel).color(color="white")
+# # logLevel = Terminal.Format(loglevel).color(color="white")
 
-# log = Terminal.Format(File.JSON().read(sampfp)).toString()
+# # log = Terminal.Format(File.JSON().read(sampfp)).toString()
 
-# logTBP = f"{logLevel} {log}"
+# # logTBP = f"{logLevel} {log}"
 
-# Terminal.log(logTBP)
+# # Terminal.log(logTBP)
 
-# print(File.LOG().read("/workspaces/logsmith/configs/log.log"))
+# # print(File.LOG().read("/workspaces/logsmith/configs/log.log"))
 
-File.LOG().write("/workspaces/logsmith/configs/log.log", data=("line1", "line2") )
-File.LOG().write("/workspaces/logsmith/configs/log.log", data={"key" : "val"})
+# File.LOG().write("/workspaces/logsmith/configs/log.log", data=("line1", "line2") )
+# File.LOG().write("/workspaces/logsmith/configs/log.log", data={"key" : "val"})
+
 

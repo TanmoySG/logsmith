@@ -1,16 +1,6 @@
-from packages.constants import DefaultLogStatementPattern, DefaultConfigurations, LogFormats
-from packages.utilities import String, File
-
-from termcolor import colored
-import datetime
-
-LOG_MODE_COLORS = {
-    "WARNING": "yellow",
-    "INFO": "blue",
-    "SUCCESS": "green",
-    "FAILURE": "red",
-    "CRITICAL": "grey"
-}
+from packages.constants import DefaultConfigurations, LogLevels
+from packages.utilities import File
+from packages.logging import Driver
 
 
 def logToFile(filepath, logStatement) -> None:
@@ -51,41 +41,37 @@ class Logsmith:
         # self.monitorConfigs = getMonitorConfigs(configurations)
         
 
-    def INFO(self, message):
-        _timestamp = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        log_statement = f"({self.ENV}) [{_timestamp}] INFO : {message}"
-        if self.console_only != True:
-            logToFile(self.logfile, log_statement)
-        print(colored(text=log_statement, color=LOG_MODE_COLORS["INFO"]))
+    def INFO(self, log):
+        Driver(logLevel=LogLevels.INFO).run(log)
 
-    def WARN(self, message):
-        _timestamp = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        log_statement = f"({self.ENV}) [{_timestamp}] WARNING : {message}"
-        if self.console_only != True:
-            logToFile(self.logfile, log_statement)
-        print(colored(text=log_statement, color=LOG_MODE_COLORS["WARNING"]))
+    # def WARN(self, message):
+    #     _timestamp = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    #     log_statement = f"({self.ENV}) [{_timestamp}] WARNING : {message}"
+    #     if self.console_only != True:
+    #         logToFile(self.logfile, log_statement)
+    #     print(colored(text=log_statement, color=LOG_MODE_COLORS["WARNING"]))
 
-    def SUCCESS(self, message):
-        _timestamp = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        log_statement = f"({self.ENV}) [{_timestamp}] SUCCESS : {message}"
-        if self.console_only != True:
-            logToFile(self.logfile, log_statement)
-        print(colored(text=log_statement, color=LOG_MODE_COLORS["SUCCESS"]))
+    # def SUCCESS(self, message):
+    #     _timestamp = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    #     log_statement = f"({self.ENV}) [{_timestamp}] SUCCESS : {message}"
+    #     if self.console_only != True:
+    #         logToFile(self.logfile, log_statement)
+    #     print(colored(text=log_statement, color=LOG_MODE_COLORS["SUCCESS"]))
 
-    def FAILURE(self, message):
-        _timestamp = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        log_statement = f"({self.ENV}) [{_timestamp}] FAILURE : {message}"
-        if self.console_only != True:
-            logToFile(self.logfile, log_statement)
-        print(colored(text=log_statement, color=LOG_MODE_COLORS["FAILURE"]))
+    # def FAILURE(self, message):
+    #     _timestamp = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    #     log_statement = f"({self.ENV}) [{_timestamp}] FAILURE : {message}"
+    #     if self.console_only != True:
+    #         logToFile(self.logfile, log_statement)
+    #     print(colored(text=log_statement, color=LOG_MODE_COLORS["FAILURE"]))
 
-    def CRITICAL(self, message):
-        _timestamp = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        log_statement = f"({self.ENV}) [{_timestamp}] CRITICAL : {message}"
-        if self.console_only != True:
-            logToFile(self.logfile, log_statement)
-        print(colored(text=log_statement,
-              color=LOG_MODE_COLORS["CRITICAL"], on_color="on_red"))
+    # def CRITICAL(self, message):
+    #     _timestamp = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    #     log_statement = f"({self.ENV}) [{_timestamp}] CRITICAL : {message}"
+    #     if self.console_only != True:
+    #         logToFile(self.logfile, log_statement)
+    #     print(colored(text=log_statement,
+    #           color=LOG_MODE_COLORS["CRITICAL"], on_color="on_red"))
 
 class log(Logsmith):
 
