@@ -18,7 +18,7 @@ def logToFile(filepath, logStatement) -> None:
         logfileObject.write(logStatement+"\n")
 
 
-class log:
+class Logsmith:
 
     def __init__(self, configurations: dict) -> None:
         self.env = configurations.get("env" , DefaultConfigurations.env)
@@ -28,7 +28,6 @@ class log:
         self.logStatementPattern = configurations.get("logStatementPattern", DefaultConfigurations.logStatementPattern)
         self.monitorLogging = configurations.get("monitorLogging", DefaultConfigurations.monitorLogging)
         # self.monitorConfigs = getMonitorConfigs(configurations)
-        self.compiledLogPattern = String.Template(self.logStatementPattern)
         pass
 
     def configure(self,  configurations: dict):
@@ -39,7 +38,7 @@ class log:
         self.logStatementPattern = configurations.get("logStatementPattern", self.logStatementPattern)
         self.monitorLogging = configurations.get("monitorLogging", self.monitorLogging)
         # self.monitorConfigs = getMonitorConfigs(configurations)
-        self.compiledLogPattern = String.Template(self.logStatementPattern)
+        
 
     def fetchConfigFromFile(self, filepath : str):
         configurations = File.JSON.read(filepath)
@@ -50,7 +49,6 @@ class log:
         self.logStatementPattern = configurations.get("logStatementPattern", DefaultConfigurations.logStatementPattern)
         self.monitorLogging = configurations.get("monitorLogging", DefaultConfigurations.monitorLogging)
         # self.monitorConfigs = getMonitorConfigs(configurations)
-        self.compiledLogPattern = String.Template(self.logStatementPattern)
         
 
     def INFO(self, message):
@@ -88,3 +86,8 @@ class log:
             logToFile(self.logfile, log_statement)
         print(colored(text=log_statement,
               color=LOG_MODE_COLORS["CRITICAL"], on_color="on_red"))
+
+class log(Logsmith):
+
+    def __init__(self, configurations: dict) -> None:
+        super().__init__(configurations)

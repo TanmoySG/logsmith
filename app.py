@@ -40,6 +40,7 @@
 
 
 from logsmith.packages.utilities import File, Terminal, String
+from logsmith.packages.logging import LOG, transform
 
 # sampfp = "/workspaces/logsmith/configs/config.json"
 
@@ -58,3 +59,4 @@ from logsmith.packages.utilities import File, Terminal, String
 
 File.LOG().write("/workspaces/logsmith/configs/log.log", data=("line1", "line2") )
 File.LOG().write("/workspaces/logsmith/configs/log.log", data={"key" : "val"})
+
