@@ -24,7 +24,7 @@ def getColor(loglevel):
     elif loglevel == LogLevels.CRITICAL:
         color = ColorModes.CRITICAL
         bgcolor = "red"
-    elif loglevel == LogLevels.CUSTOM:
+    else:
         color = ColorModes.CUSTOM
         bgcolor = None
     return color, bgcolor

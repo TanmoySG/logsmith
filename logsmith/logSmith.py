@@ -44,34 +44,20 @@ class Logsmith:
     def INFO(self, log):
         Driver(loglevel=LogLevels.INFO, configs=self).run(log)
 
-    # def WARN(self, message):
-    #     _timestamp = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    #     log_statement = f"({self.ENV}) [{_timestamp}] WARNING : {message}"
-    #     if self.console_only != True:
-    #         logToFile(self.logfile, log_statement)
-    #     print(colored(text=log_statement, color=LOG_MODE_COLORS["WARNING"]))
+    def WARN(self, log):
+        Driver(loglevel=LogLevels.WARN, configs=self).run(log)
 
-    # def SUCCESS(self, message):
-    #     _timestamp = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    #     log_statement = f"({self.ENV}) [{_timestamp}] SUCCESS : {message}"
-    #     if self.console_only != True:
-    #         logToFile(self.logfile, log_statement)
-    #     print(colored(text=log_statement, color=LOG_MODE_COLORS["SUCCESS"]))
+    def SUCCESS(self, log):
+        Driver(loglevel=LogLevels.SUCCESS, configs=self).run(log)
 
-    # def FAILURE(self, message):
-    #     _timestamp = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    #     log_statement = f"({self.ENV}) [{_timestamp}] FAILURE : {message}"
-    #     if self.console_only != True:
-    #         logToFile(self.logfile, log_statement)
-    #     print(colored(text=log_statement, color=LOG_MODE_COLORS["FAILURE"]))
+    def FAILURE(self, log):
+        Driver(loglevel=LogLevels.FAILURE, configs=self).run(log)
 
-    # def CRITICAL(self, message):
-    #     _timestamp = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    #     log_statement = f"({self.ENV}) [{_timestamp}] CRITICAL : {message}"
-    #     if self.console_only != True:
-    #         logToFile(self.logfile, log_statement)
-    #     print(colored(text=log_statement,
-    #           color=LOG_MODE_COLORS["CRITICAL"], on_color="on_red"))
+    def CRITICAL(self, log):
+        Driver(loglevel=LogLevels.CRITICAL, configs=self).run(log)
+
+    def LOG(self, loglevel, log):
+        Driver(loglevel=loglevel, configs=self).run(log)
 
 class log(Logsmith):
 
