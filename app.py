@@ -60,4 +60,10 @@
 # File.LOG().write("/workspaces/logsmith/configs/log.log", data=("line1", "line2") )
 # File.LOG().write("/workspaces/logsmith/configs/log.log", data={"key" : "val"})
 
+from logsmith import Logsmith
 
+log = Logsmith({})
+log.fetchConfigFromFile(filepath="/workspaces/logsmith/configs/config.json")
+
+log.INFO("Information")
+log.INFO({"message": "Information"})

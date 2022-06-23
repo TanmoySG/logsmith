@@ -1,6 +1,6 @@
-from packages.constants import DefaultConfigurations, LogLevels
-from packages.utilities import File
-from packages.logging import Driver
+from logsmith.packages.constants import DefaultConfigurations, LogLevels
+from logsmith.packages.utilities import File
+from logsmith.packages.logging import Driver
 
 
 def logToFile(filepath, logStatement) -> None:
@@ -31,10 +31,10 @@ class Logsmith:
         
 
     def fetchConfigFromFile(self, filepath : str):
-        configurations = File.JSON.read(filepath)
+        configurations = File.JSON().read(filepath)
         self.env = configurations.get("env" , DefaultConfigurations.env)
         self.logfile = configurations.get("logfile",  DefaultConfigurations.logfile)
-        self.console_only = configurations.get("console_only", DefaultConfigurations.console_only)
+        self.console_only = configurations.get("consoleOnly", DefaultConfigurations.console_only)
         self.logFormat = configurations.get("logFormat", DefaultConfigurations.logFormat)
         self.logStatementPattern = configurations.get("logStatementPattern", DefaultConfigurations.logStatementPattern)
         self.monitorLogging = configurations.get("monitorLogging", DefaultConfigurations.monitorLogging)
@@ -42,7 +42,7 @@ class Logsmith:
         
 
     def INFO(self, log):
-        Driver(logLevel=LogLevels.INFO).run(log)
+        Driver(loglevel=LogLevels.INFO, configs=self).run(log)
 
     # def WARN(self, message):
     #     _timestamp = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
