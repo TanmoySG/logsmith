@@ -26,8 +26,8 @@ LogLevels = SimpleNamespace(
 
 LogFormats = SimpleNamespace(
     **{
-        "JSON": "JSON",
-        "Statement": "Statement"
+        "JSON": "json",
+        "Statement": "statement"
     }
 )
 

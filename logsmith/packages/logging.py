@@ -1,6 +1,6 @@
 import time
-from packages.utilities import File, Terminal, String
-from packages.constants import LogFormats, LogLevels, ColorModes
+from logsmith.packages.utilities import File, Terminal, String
+from logsmith.packages.constants import LogFormats, LogLevels, ColorModes
 
 
 def transform(log) -> dict:
@@ -8,7 +8,7 @@ def transform(log) -> dict:
 
 
 def getColor(loglevel):
-    color, bgcolor = None
+    color, bgcolor = None, None
     if loglevel == LogLevels.WARN:
         color = ColorModes.WARN
         bgcolor = None
@@ -32,10 +32,13 @@ def getColor(loglevel):
 
 class Driver:
 
-    def __init__(self, logLevel, configs) -> None:
-        self = configs
-        self.loglevel = logLevel
-        self.color , self.bgcolor = getColor(loglevel=logLevel)
+    def __init__(self, loglevel, configs) -> None:
+        self.console_only = configs.console_only
+        self.logFormat = configs.logFormat
+        self.logStatementPattern = configs.logStatementPattern
+        self.logfile = configs.logfile
+        self.loglevel = loglevel
+        self.color , self.bgcolor = getColor(loglevel=loglevel)
         pass
 
     def run(self, log):
@@ -43,12 +46,13 @@ class Driver:
             log = transform(log)
 
         log["timestamp"] = int(time.time())
-        log["logLevel"] = self.logLevel
+        log["loglevel"] = self.loglevel
 
         if self.console_only == False:
             File.LOG().write(filepath=self.logfile, data=log)
 
         logbody= None
+
         if self.logFormat == LogFormats.Statement:
             logbody = String.Template(self.logStatementPattern).fill(data=log)
         elif self.logFormat == LogFormats.JSON:
