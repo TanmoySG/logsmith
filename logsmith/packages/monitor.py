@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import os
 from logsmith.packages.utilities import String
 
-URITemplate = compile("{0}://{1}:{2}");
+URITemplate =  String.Template("{0}://{1}:{2}");
 
 class DefaultPublisherTemplate:
     Origin = String.Template("app.{0}.com")
@@ -17,22 +17,23 @@ class DefaultContextTemplate:
 
 
 class Monitor:
-    def __init__(self, monitorConfig) -> None:
-        if "monitor" in self.monitorConfig:
-            return {}
-        self.monitorConfig = monitorConfig
+    def __init__(self, monitorConfig=None) -> None:
+        """
+
+        """
+        self.config = monitorConfig
         pass
 
-    def getConfigs(self) -> dict:
-        if "monitor" in self.monitorConfig:
-            return {}
+    def getConfigs(self, config) -> dict:
         monitorConfigs = {}
-        monitorConfigs.monitorPort = config.monitor.port || process.env.MONITOR_PORT
-        monitorConfigs.monitorURI = config.monitor.server || process.env.MONITOR_URI
-        monitorConfigs.monitorProtocol = config.monitor.protocol || process.env.MONITOR_PROTOCOL || "http"
-        monitorConfigs.monitorListener = URITemplate(monitorConfigs.monitorProtocol, monitorConfigs.monitorURI, monitorConfigs.monitorPort) || process.env.LISTENER
-        monitorConfigs.publisher = formatPublisherConfig(config.monitor.publisher)
-        monitorConfigs.context = formatContextConfig(monitorConfigs.publisher.publisher, config.monitor.context)
+        if "monitor" in config:
+            return  monitorConfigs 
+        monitorConfigs["monitorPort"] = config["monitor"].get("port" , os.environ["MONITOR_PORT"])
+        monitorConfigs["monitorURI"] = config["monitor"].get("server" , os.environ["MONITOR_URI"])
+        monitorConfigs["monitorProtocol"] = config["monitor"].get("protocol" , "http")
+        monitorConfigs["monitorListener"] =  os.environ.get("LISTENER" , URITemplate.fill([monitorConfigs["monitorProtocol"], monitorConfigs["monitorURI"], monitorConfigs["monitorPort"]]))
+        monitorConfigs["publisher"] = self.Publisher(config["monitor"]["publisher"]).getConfig()
+        monitorConfigs["context"] = self.Context(publisher=monitorConfigs["publisher"]["publisher"], contextConfig=config["monitor"]["context"]).getConfig()
         return monitorConfigs
 
     class Publisher:
