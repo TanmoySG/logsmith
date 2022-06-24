@@ -1,4 +1,5 @@
 import json
+import requests
 from termcolor import colored
 
 
@@ -255,3 +256,40 @@ class Terminal:
                 value of text
             """
             return str(self.text)
+
+
+class Fetch:
+    """
+    Fetch utility provides a wrapper interface on requests module to perform requests.
+    """
+
+    def __init__(self, url: str) -> None:
+        """
+        Constructor to define URL.
+
+        Args:
+            url [str] : URL of Endpoint to be fetched
+        """
+        self.url = url
+        pass
+
+    def POST(self, header=None, payload=None):
+        """
+        POST() method provides a wrapper over request.post()
+
+        Args:
+            header [dict] : dictionary of headers for the request.
+            payload [any] : payload/data to be posted.
+        """
+        response = requests.post(url=self.url, headers=header, data=payload)
+        return response.status_code, response.json()
+
+    def GET(self, header=None):
+        """
+        GET() method provides a wrapper over request.get()
+
+        Args:
+            header [dict] : dictionary of headers for the request.
+        """
+        response = requests.get(url=self.url, headers=header)
+        return response.status_code, response.json()
