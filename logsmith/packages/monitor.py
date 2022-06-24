@@ -1,15 +1,14 @@
 import os
 
-import requests
-from logsmith.packages.utilities import String
+from logsmith.packages.utilities import Fetch, String
 
 
 class Endpoints:
     API = String.Template("{0}/")
     Publisher = String.Template("{0}/publisher")
-    checkPublisher = String.Template("{0}/{1}")
+    CheckPublisher = String.Template("{0}/{1}")
     Context = String.Template("{0}/{1}/context")
-    checkContext = String.Template("{0}/{1}/{2}")
+    CheckContext = String.Template("{0}/{1}/{2}")
     Log = String.Template("{0}/{1}/{2}/logs")
 
 
@@ -39,8 +38,8 @@ class Monitor:
 
     def check(self) -> dict:
         endpoint = Endpoints.API.fill(data=[self.config["monitorListener"]])
-        r = requests.get(url=endpoint)
-        return r.json()
+        _, response = Fetch(url=endpoint).GET()
+        return response
 
     def initiate(self):
         pass
@@ -71,8 +70,16 @@ class Monitor:
         ).getConfig()
         return monitorConfigs
 
-    def log(self):
-        pass
+    def log(self, log):
+        listener = self.config["monitorListener"]
+        publisher = self.config["publisher"]["publisher"]
+        context = self.config["context"]["context"]
+        endpoint = Endpoints.Log.fill(data=[listener, publisher, context])
+        payload = log
+        status_code, response = Fetch(url=endpoint).POST(
+            header=RequestHeaders.POST, payload=payload
+        )
+        return response.json()
 
     class Publisher:
         def __init__(self, publisherConfig=None) -> None:
@@ -81,10 +88,19 @@ class Monitor:
             pass
 
         def create(self):
-            pass
+            endpoint = Endpoints.Publisher.fill(data=[self.config["monitorListener"]])
+            payload = self.configs
+            status_code, response = Fetch(url=endpoint).POST(
+                header=RequestHeaders.POST, payload=payload
+            )
+            return response.json()
 
         def check(self):
-            pass
+            endpoint = Endpoints.CheckPublisher.fill(
+                data=[self.config["monitorListener"], self.publisher["publisher"]]
+            )
+            status_code, response = Fetch(url=endpoint).GET(header=RequestHeaders.POST)
+            return response.json()
 
         def getConfig(self):
             publisherConfig = {}
@@ -106,10 +122,25 @@ class Monitor:
             pass
 
         def create(self):
-            pass
+            endpoint = Endpoints.Context.fill(
+                data=[self.config["monitorListener"], self.publisher]
+            )
+            payload = self.configs
+            status_code, response = Fetch(url=endpoint).POST(
+                header=RequestHeaders.POST, payload=payload
+            )
+            return response.json()
 
         def check(self):
-            pass
+            endpoint = Endpoints.CheckContext.fill(
+                data=[
+                    self.config["monitorListener"],
+                    self.publisher,
+                    self.context["context"],
+                ]
+            )
+            status_code, response = Fetch(url=endpoint).GET(header=RequestHeaders.POST)
+            return response.json()
 
         def getConfig(self):
             contextConfig = {}

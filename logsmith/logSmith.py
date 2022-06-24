@@ -1,7 +1,7 @@
 from logsmith.packages.constants import DefaultConfigurations, LogLevels
-from logsmith.packages.utilities import File
 from logsmith.packages.logging import Driver
 from logsmith.packages.monitor import Monitor
+from logsmith.packages.utilities import File
 
 
 def logToFile(filepath, logStatement) -> None:
