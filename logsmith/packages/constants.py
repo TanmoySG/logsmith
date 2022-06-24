@@ -9,7 +9,7 @@ ColorModes = SimpleNamespace(
         "SUCCESS": "green",
         "FAILURE": "red",
         "CRITICAL": "grey",
-        "CUSTOM" : "white"
+        "CUSTOM": "white",
     }
 )
 
@@ -20,16 +20,11 @@ LogLevels = SimpleNamespace(
         "CRITICAL": "CRITICAL",
         "SUCCESS": "SUCCESS",
         "FAILURE": "FAILURE",
-        "CUSTOM": "CUSTOM"
+        "CUSTOM": "CUSTOM",
     }
 )
 
-LogFormats = SimpleNamespace(
-    **{
-        "JSON": "json",
-        "Statement": "statement"
-    }
-)
+LogFormats = SimpleNamespace(**{"JSON": "json", "Statement": "statement"})
 
 DefaultConfigurations = SimpleNamespace(
     **{
@@ -38,6 +33,6 @@ DefaultConfigurations = SimpleNamespace(
         "console_only": True,
         "logFormat": LogFormats.JSON,
         "logStatementPattern": DefaultLogStatementPattern,
-        "monitorLogging": False
+        "monitorLogging": False,
     }
 )

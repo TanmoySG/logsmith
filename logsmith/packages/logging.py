@@ -31,14 +31,13 @@ def getColor(loglevel):
 
 
 class Driver:
-
     def __init__(self, loglevel, configs) -> None:
         self.console_only = configs.console_only
         self.logFormat = configs.logFormat
         self.logStatementPattern = configs.logStatementPattern
         self.logfile = configs.logfile
         self.loglevel = loglevel
-        self.color , self.bgcolor = getColor(loglevel=loglevel)
+        self.color, self.bgcolor = getColor(loglevel=loglevel)
         pass
 
     def run(self, log):
@@ -51,15 +50,22 @@ class Driver:
         if self.console_only == False:
             File.LOG().write(filepath=self.logfile, data=log)
 
-        logbody= None
+        logbody = None
 
         if self.logFormat == LogFormats.Statement:
             logbody = String.Template(self.logStatementPattern).fill(data=log)
         elif self.logFormat == LogFormats.JSON:
             logbody = log
 
-        loglevel = String.Format(text=self.loglevel).fit().enclose(start="[", end="]").finalize()
-        loglevel = Terminal.Format(text=loglevel).color(color=self.color, bgcolor=self.bgcolor)
+        loglevel = (
+            String.Format(text=self.loglevel)
+            .fit()
+            .enclose(start="[", end="]")
+            .finalize()
+        )
+        loglevel = Terminal.Format(text=loglevel).color(
+            color=self.color, bgcolor=self.bgcolor
+        )
 
         terminalFormattedLog = f"{loglevel} {logbody}"
 

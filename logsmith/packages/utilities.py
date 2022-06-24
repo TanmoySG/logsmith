@@ -75,7 +75,7 @@ class String:
 
         def __init__(self, template: str) -> None:
             """
-            Constructor to pass the template string. 
+            Constructor to pass the template string.
 
             Args:
                 template: string template with placeholders within {}
@@ -132,14 +132,14 @@ class File:
 
             Args:
                 filepath [str] : path to file
-            
+
             Returns:
                 A list with lines from the file
             """
 
             if not self.isLOG(filepath=filepath):
                 raise ValueError(f"Only .log file supported, got {filepath}")
-                
+
             with open(filepath) as log_file:
                 data = [line.rstrip() for line in log_file]
             return data
@@ -182,7 +182,7 @@ class File:
 
         def read(self, filepath: str) -> dict:
             """
-            read() provides the utility to read JSON files 
+            read() provides the utility to read JSON files
 
             Args:
                 filepath [str] : path to the JSON file
@@ -204,7 +204,7 @@ class File:
 
 class Terminal:
     """
-    Terminal Utility provides a Common Interface for all Terminal related 
+    Terminal Utility provides a Common Interface for all Terminal related
     """
 
     def log(log) -> None:
@@ -233,7 +233,7 @@ class Terminal:
 
         def color(self, color="white", bgcolor=None) -> str:
             """
-            color() method to format with color 
+            color() method to format with color
 
             Args:
                 color   [str] : color of string
