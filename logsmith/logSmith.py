@@ -1,6 +1,7 @@
 from logsmith.packages.constants import DefaultConfigurations, LogLevels
 from logsmith.packages.utilities import File
 from logsmith.packages.logging import Driver
+from logsmith.packages.monitor import Monitor
 
 
 def logToFile(filepath, logStatement) -> None:
@@ -17,7 +18,7 @@ class Logsmith:
         self.logFormat = configurations.get("logFormat", DefaultConfigurations.logFormat)
         self.logStatementPattern = configurations.get("logStatementPattern", DefaultConfigurations.logStatementPattern)
         self.monitorLogging = configurations.get("monitorLogging", DefaultConfigurations.monitorLogging)
-        # self.monitorConfigs = getMonitorConfigs(configurations)
+        self.monitorConfigs = Monitor().getConfigs(configurations)
         pass
 
     def configure(self,  configurations: dict):
@@ -27,7 +28,7 @@ class Logsmith:
         self.logFormat = configurations.get("logFormat", self.logFormat)
         self.logStatementPattern = configurations.get("logStatementPattern", self.logStatementPattern)
         self.monitorLogging = configurations.get("monitorLogging", self.monitorLogging)
-        # self.monitorConfigs = getMonitorConfigs(configurations)
+        self.monitorConfigs = Monitor().getConfigs(configurations)
         
 
     def fetchConfigFromFile(self, filepath : str):
@@ -38,7 +39,7 @@ class Logsmith:
         self.logFormat = configurations.get("logFormat", DefaultConfigurations.logFormat)
         self.logStatementPattern = configurations.get("logStatementPattern", DefaultConfigurations.logStatementPattern)
         self.monitorLogging = configurations.get("monitorLogging", DefaultConfigurations.monitorLogging)
-        # self.monitorConfigs = getMonitorConfigs(configurations)
+        self.monitorConfigs = Monitor().getConfigs(configurations)
         
 
     def INFO(self, log):
