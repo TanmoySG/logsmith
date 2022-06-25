@@ -36,3 +36,24 @@ DefaultConfigurations = SimpleNamespace(
         "monitorLogging": False,
     }
 )
+
+class MonitorResponse:
+    class Publisher:
+        exists = "publisher.exists"
+        invalid = "publisher.invalid"
+        success = "publisher.success"
+        missing = "publisher.missing"
+
+    class Context:
+        exists = "context.exists"
+        invalid = "context.invalid"
+        success = "context.success"
+        missing = "context.missing"
+
+    class Log:
+        error = "log.error"
+        success = "log.success"
+
+    class Connection:
+        failed = "connection.failed"
+        success = "connection.success"
