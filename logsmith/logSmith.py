@@ -57,6 +57,9 @@ class Logsmith:
         )
         self.monitorConfigs = Monitor().getConfigs(configurations)
 
+    def prepareMonitor(self):
+        return Monitor(monitorConfig=self.monitorConfigs).prepare()
+
     def INFO(self, log):
         Driver(loglevel=LogLevels.INFO, configs=self).run(log)
 
