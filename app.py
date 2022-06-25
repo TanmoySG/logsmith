@@ -3,6 +3,8 @@ from logsmith import Logsmith
 log = Logsmith({})
 log.fetchConfigFromFile(filepath="/workspaces/logsmith/configs/config.json")
 
+log.prepareMonitor()
+
 log.INFO("Information")
 log.WARN({"message": "Information"})
 log.CRITICAL({"message": "Information"})
