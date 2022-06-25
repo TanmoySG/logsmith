@@ -281,7 +281,7 @@ class Fetch:
             header [dict] : dictionary of headers for the request.
             payload [any] : payload/data to be posted.
         """
-        response = requests.post(url=self.url, headers=header, data=payload)
+        response = requests.post(url=self.url, headers=header, json=payload)
         return response.status_code, response.json()
 
     def GET(self, header=None):
