@@ -1,6 +1,10 @@
 import os
 
 from logsmith.packages.utilities import Fetch, String
+from logsmith.packages.constants import MonitorResponse
+
+
+URITemplate = String.Template("{0}://{1}:{2}")
 
 
 class Endpoints:
@@ -10,9 +14,6 @@ class Endpoints:
     Context = String.Template("{0}/{1}/context")
     CheckContext = String.Template("{0}/{1}/{2}")
     Log = String.Template("{0}/{1}/{2}/logs")
-
-
-URITemplate = String.Template("{0}://{1}:{2}")
 
 
 class DefaultPublisherTemplate:
@@ -33,24 +34,57 @@ class RequestHeaders:
 class Monitor:
     def __init__(self, monitorConfig=None) -> None:
         """ """
-        self.config = monitorConfig
+        self.configurations = monitorConfig
         pass
 
     def check(self) -> dict:
-        endpoint = Endpoints.API.fill(data=[self.config["monitorListener"]])
-        _, response = Fetch(url=endpoint).GET()
-        return response
+        endpoint = Endpoints.API.fill(data=[self.configurations["monitorListener"]])
+        status_code, response = Fetch(url=endpoint).GET()
 
-    def initiate(self):
-        pass
+        status = True
+        if status_code != 200:
+            status = False
+        return status, response["scope"]
 
-    def getConfigs(self, config) -> dict:
+    def prepare(self):
+        publisher = self.configurations["publisher"]
+        context = self.configurations["context"]
+
+        status, scope = self.Context(
+            publisher=publisher["publisher"], configurations=self.configurations
+        ).check()
+        if scope == MonitorResponse.Publisher.missing:
+            status, scope = self.Publisher(configurations=self.configurations).create()
+            if scope == MonitorResponse.Publisher.success:
+                status, scope = self.Context(
+                    publisher=publisher["publisher"], configurations=self.configurations
+                ).create()
+                if scope == MonitorResponse.Context.success:
+                    return True, scope
+                else:
+                    return False, scope
+            else:
+                return False, scope
+        elif scope == MonitorResponse.Context.missing:
+            status, scope = self.Context(
+                publisher=publisher["publisher"], configurations=self.configurations
+            ).create()
+            if scope == MonitorResponse.Context.success:
+                return True, scope
+            else:
+                return False, scope
+        else:
+            return False, scope
+
+    def getConfigs(self, configurations) -> dict:
         monitorConfigs = {}
-        if "monitor" not in config:
+        if "monitor" not in configurations:
             return monitorConfigs
-        monitorConfigs["monitorPort"] = config["monitor"]["port"]
-        monitorConfigs["monitorURI"] = config["monitor"].get("server")
-        monitorConfigs["monitorProtocol"] = config["monitor"].get("protocol", "http")
+        monitorConfigs["monitorPort"] = configurations["monitor"]["port"]
+        monitorConfigs["monitorURI"] = configurations["monitor"].get("server")
+        monitorConfigs["monitorProtocol"] = configurations["monitor"].get(
+            "protocol", "http"
+        )
         monitorConfigs["monitorListener"] = os.environ.get(
             "LISTENER",
             URITemplate.fill(
@@ -62,100 +96,130 @@ class Monitor:
             ),
         )
         monitorConfigs["publisher"] = self.Publisher(
-            config["monitor"]["publisher"]
+            configurations["monitor"]["publisher"]
         ).getConfig()
         monitorConfigs["context"] = self.Context(
             publisher=monitorConfigs["publisher"]["publisher"],
-            contextConfig=config["monitor"]["context"],
+            configurations=configurations["monitor"]["context"],
         ).getConfig()
         return monitorConfigs
 
     def log(self, log):
-        listener = self.config["monitorListener"]
-        publisher = self.config["publisher"]["publisher"]
-        context = self.config["context"]["context"]
+        listener = self.configurations["monitorListener"]
+        publisher = self.configurations["publisher"]["publisher"]
+        context = self.configurations["context"]["context"]
         endpoint = Endpoints.Log.fill(data=[listener, publisher, context])
         payload = log
         status_code, response = Fetch(url=endpoint).POST(
             header=RequestHeaders.POST, payload=payload
         )
-        return response.json()
+
+        status = True
+        if status_code != 200:
+            status = False
+
+        return status, response["scope"]
 
     class Publisher:
-        def __init__(self, publisherConfig=None) -> None:
-            self.configs = publisherConfig
-            self.publisher = self.configs["publisher"]
+        def __init__(self, configurations=None) -> None:
+            self.configurations = configurations
+            self.publisher = self.configurations["publisher"]
             pass
 
         def create(self):
-            endpoint = Endpoints.Publisher.fill(data=[self.config["monitorListener"]])
-            payload = self.configs
+            endpoint = Endpoints.Publisher.fill(
+                data=[self.configurations["monitorListener"]]
+            )
+            payload = self.publisher
             status_code, response = Fetch(url=endpoint).POST(
                 header=RequestHeaders.POST, payload=payload
             )
-            return response.json()
+
+            status = True
+            if status_code != 200:
+                status = False
+
+            return status, response["scope"]
 
         def check(self):
             endpoint = Endpoints.CheckPublisher.fill(
-                data=[self.config["monitorListener"], self.publisher["publisher"]]
+                data=[
+                    self.configurations["monitorListener"],
+                    self.publisher["publisher"],
+                ]
             )
             status_code, response = Fetch(url=endpoint).GET(header=RequestHeaders.POST)
-            return response.json()
+
+            status = True
+            if status_code != 200:
+                status = False
+
+            return status, response["scope"]
 
         def getConfig(self):
             publisherConfig = {}
-            publisherConfig["publisher"] = self.configs["publisher"]
-            publisherConfig["origin"] = self.configs.get(
+            publisherConfig["publisher"] = self.configurations["publisher"]
+            publisherConfig["origin"] = self.configurations.get(
                 "origin", DefaultPublisherTemplate.Origin.fill(data=[self.publisher])
             )
-            publisherConfig["description"] = self.configs.get(
+            publisherConfig["description"] = self.configurations.get(
                 "description",
                 DefaultPublisherTemplate.Description.fill(data=[self.publisher]),
             )
             return publisherConfig
 
     class Context:
-        def __init__(self, publisher="default", contextConfig=None) -> None:
-            self.configs = contextConfig
+        def __init__(self, publisher="default", configurations=None) -> None:
+            self.configurations = configurations
             self.publisher = publisher
-            self.context = self.configs["context"]
+            self.context = self.configurations["context"]
             pass
 
         def create(self):
             endpoint = Endpoints.Context.fill(
-                data=[self.config["monitorListener"], self.publisher]
+                data=[self.configurations["monitorListener"], self.publisher]
             )
-            payload = self.configs
+            payload = self.context
             status_code, response = Fetch(url=endpoint).POST(
                 header=RequestHeaders.POST, payload=payload
             )
-            return response.json()
+
+            status = True
+            if status_code != 200:
+                status = False
+
+            return status, response["scope"]
 
         def check(self):
             endpoint = Endpoints.CheckContext.fill(
                 data=[
-                    self.config["monitorListener"],
+                    self.configurations["monitorListener"],
                     self.publisher,
                     self.context["context"],
                 ]
             )
             status_code, response = Fetch(url=endpoint).GET(header=RequestHeaders.POST)
-            return response.json()
+
+            status = True
+            if status_code != 200:
+                status = False
+
+            return status, response["scope"]
 
         def getConfig(self):
             contextConfig = {}
-            contextConfig["context"] = self.configs["context"]
-            contextConfig["origin"] = self.configs.get(
+            contextConfig["context"] = self.configurations["context"]
+            contextConfig["origin"] = self.configurations.get(
                 "origin",
                 DefaultContextTemplate.Origin.fill(data=[self.publisher, self.context]),
             )
-            contextConfig["description"] = self.configs.get(
+            contextConfig["description"] = self.configurations.get(
                 "description",
                 DefaultPublisherTemplate.Description.fill(
                     data=[self.publisher, self.context]
                 ),
             )
-            contextConfig["kind"] = self.configs.get(
+            contextConfig["kind"] = self.configurations.get(
                 "kind", DefaultContextTemplate.Kind
             )
             return contextConfig
