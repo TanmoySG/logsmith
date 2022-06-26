@@ -3,3 +3,6 @@ run-monitor:
 
 show-monitor:
 	docker logs --tail 1000 -f monitor
+
+teardown-monitor:
+	docker rm -f monitor
