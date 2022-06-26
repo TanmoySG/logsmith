@@ -114,35 +114,34 @@ The Various flags/fields that can be configured are
 Configurations can be defined and used in an application by creating the config json and passing it to the Logsmith object while initializing.
 
 ```py
-import Logsmith  from "Logsmith.py"
+from logsmith import Logsmith
 
-const logConfig = {
+logConfig = {
     "env": "test",
     "logfile": "path/to/local/log/file",
-    "consoleOnly": false,
+    "consoleOnly": False,
     "logStatementPattern": "[ {component} ~ {logLevel} ] : {message}",
     "logFormat": "json",
-    "monitorLogging": true
+    "monitorLogging": True
 }
 
-const log = new Logsmith(logConfig)
+log = Logsmith(logConfig)
 ```
 
 Configurations may also be loaded from JSON files. Define the Configurations in a JSON file and load it using `fetchConfigFromFile()` method.
 
 ```py
-import Logsmith from "Logsmith.py"
+from logsmith import Logsmith
 
-const log = new Logsmith({});
-
-log.fetchConfigFromFile("/path/to/config/file.json")
+log = Logsmith({})
+log.fetchConfigFromFile(filepath="/path/to/config/file.json")
 ```
 
 ## Support for Logsmith Monitor
 
 Logsmith Monitor (or simply Monitor) is a stand-alone logging Server for multi-component apps. Read about logsmith-monitor [here](https://github.com/TanmoySG/logsmith-monitor).
 
-Logsmith.py supports logging to Monitor. It pro creation of Publishers and Context
+Logsmith.py supports logging to Monitor. It supports creation of Publishers and Context namespaces.
 
 ### Monitor Configurations
 
@@ -219,14 +218,16 @@ When these values are not mentioned/provided by the user, logsmith creates/gener
 
 ### Initializing Monitor Connection
 
-Logsmith provides a method - `initializeMonitor()`, to initialize a connection with the monitor. The method checks if the Publisher and Context Namespaces are available in monitor and creates them if not. 
+Logsmith provides a method - `prepareMonitor()`, to initialize a connection with the monitor. The method checks if the Publisher and Context Namespaces are available in monitor and creates them if not. 
 
 ```py
-const log = new Logsmith({})
-log.fetchConfigFromFile("/path/to/file.json")
+from logsmith import Logsmith
+
+log = Logsmith({})
+log.fetchConfigFromFile(filepath="/path/to/file.json")
 
 // initialize Monitor
-log.initializeMonitor()
+log.prepareMonitor()
 ```
 
 ## Know More
@@ -239,10 +240,10 @@ Log Statement Patterns are strings with placeholder that are used to print logs 
 
 Example Usage
 ```py
-import Logsmith  from "Logsmith.py";
+from logsmith import Logsmith
 
-const logStatementPattern = "{timestamp} > {status}"
-const log = new Logsmith({logStatementPattern : logStatementPattern})
+logStatementPattern = "{timestamp} > {status}"
+log = Logsmith({"logStatementPattern" : logStatementPattern})
 
 log.INFO({"timetamp": "11 AM", "status" : "ok", "action": "create"})
 ```
@@ -258,27 +259,13 @@ To test Logsmith and Logsmith-Monitor in Action, we created this example applica
 
 Startup Logsmith Monitor in Docker
 ```console
-docker pull ghcr.io/tanmoysg/logsmith-monitor:v0.0.5
-
-docker run ghcr.io/tanmoysg/logsmith-monitor:v0.0.5
+make run-monitor
+make show-monitor
 ```
 
-Go to the [`examples`](../examples/) directory. Start the example Express App.
+Start the example Python App (Script).
 ```console
-node .
-```
-
-Once the Server starts, it gives an endpoint for each logging method. The Endpoints available are
-- {express-app-url}/warn
-- {express-app-url}/info
-- {express-app-url}/critical
-- {express-app-url}/success
-- {express-app-url}/failure
-- {express-app-url}/log
-
-These can be tested using cURL
-```console
-curl localhost:8096/info
+python3 example.py
 ```
 
 The logs should be printed both on the monitor as well as the example app terminal. Play around with the config for more customization.
