@@ -11,6 +11,12 @@ def logToFile(filepath, logStatement) -> None:
 
 class Logsmith:
     def __init__(self, configurations: dict) -> None:
+        """
+        Constructor to load configurations into the Logsmith Object.
+
+        Args:
+            configurations [dict] : dictionary with values for configurations.
+        """
         self.env = configurations.get("env", DefaultConfigurations.env)
         self.logfile = configurations.get("logfile", DefaultConfigurations.logfile)
         self.console_only = configurations.get(
@@ -28,7 +34,7 @@ class Logsmith:
         self.monitorConfigs = Monitor().getConfigs(configurations)
         pass
 
-    def configure(self, configurations: dict):
+    def configure(self, configurations: dict) -> None:
         """
         configure() method helps to load configurations into the Logsmith Object.
 
@@ -44,8 +50,9 @@ class Logsmith:
         )
         self.monitorLogging = configurations.get("monitorLogging", self.monitorLogging)
         self.monitorConfigs = Monitor().getConfigs(configurations)
+        pass
 
-    def fetchConfigFromFile(self, filepath: str):
+    def fetchConfigFromFile(self, filepath: str) -> None:
         """
         fetchConfigFromFile() method helps to load configurations from JSON Config Files.
 
@@ -68,6 +75,7 @@ class Logsmith:
             "monitorLogging", DefaultConfigurations.monitorLogging
         )
         self.monitorConfigs = Monitor().getConfigs(configurations)
+        pass
 
     def prepareMonitor(self):
         """
@@ -81,21 +89,58 @@ class Logsmith:
         return Monitor(monitorConfig=self.monitorConfigs).prepare()
 
     def INFO(self, log):
+        """
+        INFO() is one of the logging methods that can be used for logging at Informational log level.
+
+        Args:
+            log [string | dict] : log to be published
+        """
         Driver(loglevel=LogLevels.INFO, configs=self).run(log)
 
     def WARN(self, log):
+        """
+        WARN() is one of the logging methods that can be used for logging at Warning log level.
+
+        Args:
+            log [string | dict] : log to be published
+        """
         Driver(loglevel=LogLevels.WARN, configs=self).run(log)
 
     def SUCCESS(self, log):
+        """
+        SUCCESS() is one of the logging methods that can be used for logging at Successful log level.
+
+        Args:
+            log [string | dict] : log to be published
+        """
         Driver(loglevel=LogLevels.SUCCESS, configs=self).run(log)
 
     def FAILURE(self, log):
+        """
+        FAILURE() is one of the logging methods that can be used for logging at Failure log level.
+
+        Args:
+            log [string | dict] : log to be published
+        """
         Driver(loglevel=LogLevels.FAILURE, configs=self).run(log)
 
     def CRITICAL(self, log):
+        """
+        CRITICAL() is one of the logging methods that can be used for logging at Critical log level.
+
+        Args:
+            log [string | dict] : log to be published
+        """
         Driver(loglevel=LogLevels.CRITICAL, configs=self).run(log)
 
     def LOG(self, loglevel, log):
+        """
+        LOG() is one of the logging methods that can be used for logging with Custom log level.
+
+        Args:
+            loglevel [string]   : custom loglevel
+            log [string | dict] : log to be published
+        """
         Driver(loglevel=loglevel, configs=self).run(log)
 
 
