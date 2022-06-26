@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='logsmith',
-    version="0.0.4",
+    version="0.1.0",
     author='Tanmoy Sen Gupta',
     author_email='tanmoysps@gmail.com',
     url='https://github.com/TanmoySG/logsmith',
@@ -22,7 +22,8 @@ setup(
     packages=find_packages(),
     keywords=['imports', 'logs', 'python', 'logging'],
     install_requires=[
-        'termcolor==1.1.0'
+        'termcolor==1.1.0',
+        'requests==2.28.0'
     ],
     zip_safe=False
 )
