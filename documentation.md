@@ -191,8 +191,8 @@ For Context Configurations, the field that needs to be put is the context name. 
 
 There are other customizable fields for either. These fields are same as that defined for running Monitor. 
 
-- [Read More about the configurations for Publisher](../../../documentation/README.md#register-a-publisher)
-- [Read More about the configurations for Contexts](../../../documentation/README.md#register-a-context)
+- [Read More about the configurations for Publisher](https://github.com/TanmoySG/logsmith-monitor/blob/main/documentation/README.md#register-a-publisher)
+- [Read More about the configurations for Contexts](https://github.com/TanmoySG/logsmith-monitor/blob/main/documentation/README.md#register-a-context)
 
 When these values are not mentioned/provided by the user, logsmith creates/generates those for you. So the Configuration Above becomes
 
