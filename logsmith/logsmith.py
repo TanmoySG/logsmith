@@ -29,6 +29,12 @@ class Logsmith:
         pass
 
     def configure(self, configurations: dict):
+        """
+        configure() method helps to load configurations into the Logsmith Object.
+
+        Args:
+            configurations [dict] : dictionary with values for configurations.
+        """
         self.env = configurations.get("env", self.env)
         self.logfile = configurations.get("logfile", self.logfile)
         self.console_only = configurations.get("console_only", self.console_only)
@@ -40,6 +46,12 @@ class Logsmith:
         self.monitorConfigs = Monitor().getConfigs(configurations)
 
     def fetchConfigFromFile(self, filepath: str):
+        """
+        fetchConfigFromFile() method helps to load configurations from JSON Config Files.
+
+        Args:
+            filepath [str] : Path to the Configuration File
+        """
         configurations = File.JSON().read(filepath)
         self.env = configurations.get("env", DefaultConfigurations.env)
         self.logfile = configurations.get("logfile", DefaultConfigurations.logfile)
@@ -59,7 +71,7 @@ class Logsmith:
 
     def prepareMonitor(self):
         """
-        prepareMonitor() method initiates monitor connection, prepares the monitor 
+        prepareMonitor() method initiates monitor connection, prepares the monitor
         by creating the publisher and context, if they do not exist.
 
         Returns:
