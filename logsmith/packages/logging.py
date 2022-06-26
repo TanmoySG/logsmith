@@ -1,4 +1,5 @@
 import time
+from logsmith.packages.monitor import Monitor
 from logsmith.packages.utilities import File, Terminal, String
 from logsmith.packages.constants import LogFormats, LogLevels, ColorModes
 
@@ -32,10 +33,12 @@ def getColor(loglevel):
 
 class Driver:
     def __init__(self, loglevel, configs) -> None:
+        self.monitorConfigs = configs.monitorConfigs
         self.console_only = configs.console_only
         self.logFormat = configs.logFormat
         self.logStatementPattern = configs.logStatementPattern
         self.logfile = configs.logfile
+        self.monitorLogging = configs.monitorLogging
         self.loglevel = loglevel
         self.color, self.bgcolor = getColor(loglevel=loglevel)
         pass
@@ -50,12 +53,15 @@ class Driver:
         if self.console_only == False:
             File.LOG().write(filepath=self.logfile, data=log)
 
-        logbody = None
+        logJSON = None
 
         if self.logFormat == LogFormats.Statement:
-            logbody = String.Template(self.logStatementPattern).fill(data=log)
+            logJSON = String.Template(self.logStatementPattern).fill(data=log)
         elif self.logFormat == LogFormats.JSON:
-            logbody = log
+            logJSON = log
+
+        if self.monitorLogging == True:
+            Monitor(monitorConfig=self.monitorConfigs).log(log=log)
 
         loglevel = (
             String.Format(text=self.loglevel)
@@ -67,6 +73,6 @@ class Driver:
             color=self.color, bgcolor=self.bgcolor
         )
 
-        terminalFormattedLog = f"{loglevel} {logbody}"
+        terminalFormattedLog = f"{loglevel} {logJSON}"
 
         Terminal.log(terminalFormattedLog)
