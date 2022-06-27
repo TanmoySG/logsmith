@@ -10,7 +10,7 @@ Install Logsmith.py using [pip](https://pypi.org/project/logsmith)
 pip install logsmith
 ```
 
-Import the `Logsmith` object to use Logsmith.py.
+Import the `Logsmith` object to use Logsmith.py 
 
 ```py
 from logsmith import Logsmith
@@ -19,6 +19,20 @@ log = Logsmith({})
 
 log.INFO("this is working fine")
 ```
+
+To ensure backward compatibility, the previously usable class 'log', that was the main accss point to the library, inherits from the Logsmith class and can be used interchangeably with 'Logsmith' class. Example:
+
+```
+from logsmith import log
+
+log = log({})
+
+log.INFO("this is working fine")
+```
+
+But, the log class will be phased out in favour of the Logsmith class and hence we recommend using the Logsmith class in your code for future proofing.
+
+#### Configurations
 
 While a Logsmith.py supports a no-config setup, there are some configurations that can be tweaked as per need. [Read More](#configurations)
 
