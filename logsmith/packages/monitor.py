@@ -32,12 +32,27 @@ class RequestHeaders:
 
 
 class Monitor:
+    """
+    Monitor class provides the access point to every monitor-related actions. 
+    """
     def __init__(self, monitorConfig=None) -> None:
-        """ """
+        """ 
+        Constructor to initialize monitor object with monitor configuration
+
+        Args:
+            monitorConfig [dict] : dict object with monitor configurations. 
+            Pass the json value with the key - monitor
+        """
         self.configurations = monitorConfig
         pass
 
-    def check(self) -> dict:
+    def check(self):
+        """
+        check() method checks if the monitor API is live or not.
+
+        Returns:
+            response of the API if live
+        """
         endpoint = Endpoints.API.fill(data=[self.configurations["monitorListener"]])
         status_code, response = Fetch(url=endpoint).GET()
 
@@ -47,6 +62,14 @@ class Monitor:
         return status, response["scope"]
 
     def prepare(self):
+        """
+        prepare() method initiates monitor connection, prepares the monitor
+        by creating the publisher and context, if they do not exist.
+
+        Returns:
+            status [bool] : if the action was successful or not
+            scope  [dict] : the response of request
+        """
         publisher = self.configurations["publisher"]
         context = self.configurations["context"]
 
@@ -77,6 +100,17 @@ class Monitor:
             return False, scope
 
     def getConfigs(self, configurations) -> dict:
+        """
+        getConfigs() method prepares the complete monitor configuration from the minimal configurations.
+
+        Args:
+            configurations [dict] : configurations loaded into the Logsmith method
+
+        Returns:
+            complete configuration of monitor
+
+        Refer: https://github.com/TanmoySG/logsmith-monitor/tree/main/libraries/js/logsmith#monitor-configurations
+        """
         monitorConfigs = {}
         if "monitor" not in configurations:
             return monitorConfigs
@@ -105,6 +139,16 @@ class Monitor:
         return monitorConfigs
 
     def log(self, log):
+        """
+        log() method helps in connecting to monitor and publishes logs to the monitor.
+
+        Args:
+            log [any] : log to be pubished to monitor.
+
+        Returns:
+            status [bool] : True if request was successful, else False
+            response [string] : Scope of response
+        """
         listener = self.configurations["monitorListener"]
         publisher = self.configurations["publisher"]["publisher"]
         context = self.configurations["context"]["context"]
@@ -121,12 +165,28 @@ class Monitor:
         return status, response["scope"]
 
     class Publisher:
+        """
+        Monitor.Publisher class provides a common interface for all monitor-publisher functions
+        """
         def __init__(self, configurations=None) -> None:
+            """
+            Constructor of Publisher
+
+            Args:
+                configurations [dict] : monitor configurations dict
+            """
             self.configurations = configurations
             self.publisher = self.configurations["publisher"]
             pass
 
         def create(self):
+            """
+            create() method creates the publisher from the configurations
+
+            Returns:
+                status [bool]   : True if successfull, else False
+                scope  [string] : Scope of response
+            """
             endpoint = Endpoints.Publisher.fill(
                 data=[self.configurations["monitorListener"]]
             )
@@ -142,6 +202,13 @@ class Monitor:
             return status, response["scope"]
 
         def check(self):
+            """
+            check() method checks if the publisher namespace exists in monitor
+
+            Returns:
+                status [bool]   : True if successfull, else False
+                scope  [string] : Scope of response
+            """
             endpoint = Endpoints.CheckPublisher.fill(
                 data=[
                     self.configurations["monitorListener"],
@@ -157,6 +224,12 @@ class Monitor:
             return status, response["scope"]
 
         def getConfig(self):
+            """
+            getConfig() method creates the publisher configurations
+
+            Returns:
+                publisher configs
+            """
             publisherConfig = {}
             publisherConfig["publisher"] = self.configurations["publisher"]
             publisherConfig["origin"] = self.configurations.get(
@@ -169,13 +242,30 @@ class Monitor:
             return publisherConfig
 
     class Context:
-        def __init__(self, publisher="default", configurations=None) -> None:
+        """
+        Monitor.Context class provides a common interface for all monitor-context functions
+        """
+        def __init__(self, publisher=None, configurations=None) -> None:
+            """
+            Constructor of Context
+
+            Args:
+                publisher [string] : name of the publisher namespace 
+                configurations [dict] : monitor configurations dict
+            """
             self.configurations = configurations
             self.publisher = publisher
             self.context = self.configurations["context"]
             pass
 
         def create(self):
+            """
+            create() method creates the context from the configurations
+
+            Returns:
+                status [bool]   : True if successfull, else False
+                scope  [string] : Scope of response
+            """
             endpoint = Endpoints.Context.fill(
                 data=[self.configurations["monitorListener"], self.publisher]
             )
@@ -191,6 +281,13 @@ class Monitor:
             return status, response["scope"]
 
         def check(self):
+            """
+            check() method checks if the context namespace exists in monitor
+
+            Returns:
+                status [bool]   : True if successfull, else False
+                scope  [string] : Scope of response
+            """
             endpoint = Endpoints.CheckContext.fill(
                 data=[
                     self.configurations["monitorListener"],
@@ -207,6 +304,12 @@ class Monitor:
             return status, response["scope"]
 
         def getConfig(self):
+            """
+            getConfig() method creates the context configurations
+
+            Returns:
+                context configurations
+            """
             contextConfig = {}
             contextConfig["context"] = self.configurations["context"]
             contextConfig["origin"] = self.configurations.get(

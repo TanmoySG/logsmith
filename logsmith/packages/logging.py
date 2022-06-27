@@ -32,7 +32,17 @@ def getColor(loglevel):
 
 
 class Driver:
+    """
+    Driver class is an interface for running the log flow in a sequential manner
+    """
     def __init__(self, loglevel, configs) -> None:
+        """
+        Constructor
+
+        Args:
+            loglevel [string] : Log Level for the log
+            config [dict] : the logsmith configuration 
+        """
         self.monitorConfigs = configs.monitorConfigs
         self.console_only = configs.console_only
         self.logFormat = configs.logFormat
@@ -44,6 +54,12 @@ class Driver:
         pass
 
     def run(self, log):
+        """
+        run() method runs the log flow and executes all steps in a deterministic and sequential fashion.
+
+        Args:
+            log [any] : log to be published
+        """
         if type(log) != dict:
             log = transform(log)
 
