@@ -4,11 +4,6 @@ from logsmith.packages.monitor import Monitor
 from logsmith.packages.utilities import File
 
 
-def logToFile(filepath, logStatement) -> None:
-    with open(filepath, "a") as logfileObject:
-        logfileObject.write(logStatement + "\n")
-
-
 class Logsmith:
     def __init__(self, configurations: dict) -> None:
         """
