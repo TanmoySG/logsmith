@@ -22,7 +22,7 @@ log.INFO("this is working fine")
 
 To ensure backward compatibility, the previously usable class 'log', that was the main accss point to the library, inherits from the Logsmith class and can be used interchangeably with 'Logsmith' class. Example:
 
-```
+```py
 from logsmith import log
 
 log = log({})
