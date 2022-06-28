@@ -6,7 +6,7 @@ from logsmith.packages.constants import LogFormats, LogLevels, ColorModes
 
 def transform(data) -> dict:
     """
-    transform() method converts any value into a JSON/dictionary 
+    transform() method converts any value into a JSON/dictionary
     object by assigning it as a value to the key message.
 
     Args:
@@ -15,7 +15,9 @@ def transform(data) -> dict:
     Returns:
         dict object with the data as the value of the key message
     """
-    return {"message": data}
+    if type(data) != dict:
+        return {"message": data}
+    return data
 
 
 def getColor(loglevel):
@@ -24,7 +26,7 @@ def getColor(loglevel):
 
     Args:
         loglevel [str] : level of log
-    
+
     Returns:
         color and bgcolor - foreground and background color values
     """
