@@ -284,6 +284,11 @@ python3 example.py
 
 The logs should be printed both on the monitor as well as the example app terminal. Play around with the config for more customization.
 
+Teardown the Monitor Container after testing.
+```
+make teardown-monitor
+```
+
 ## Known Issues
 
 There are some issues that we are working on to solve. List of the known issues and their temporary remediation are available [here](./KNOWN_ISSUES.md).
