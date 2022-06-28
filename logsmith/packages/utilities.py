@@ -65,7 +65,7 @@ class String:
             finalize() can be called once all the string operations are complete. It returns the string.
 
             Returns:
-                string (text)
+                the formatted string value
             """
             return self.text
 
