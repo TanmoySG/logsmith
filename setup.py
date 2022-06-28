@@ -23,7 +23,7 @@ setup(
     keywords=['imports', 'logs', 'python', 'logging'],
     install_requires=[
         'termcolor==1.1.0',
-        'requests==2.28.0'
+        'requests==2.28.0',
     ],
     zip_safe=False
 )
