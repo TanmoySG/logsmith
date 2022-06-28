@@ -4,11 +4,30 @@ from logsmith.packages.utilities import File, Terminal, String
 from logsmith.packages.constants import LogFormats, LogLevels, ColorModes
 
 
-def transform(log) -> dict:
-    return {"message": log}
+def transform(data) -> dict:
+    """
+    transform() method converts any value into a JSON/dictionary 
+    object by assigning it as a value to the key message.
+
+    Args:
+        data [any] : message/data to be converted
+
+    Returns:
+        dict object with the data as the value of the key message
+    """
+    return {"message": data}
 
 
 def getColor(loglevel):
+    """
+    getColor() method returns the foreground and background colors based on the loglevel passed.
+
+    Args:
+        loglevel [str] : level of log
+    
+    Returns:
+        color and bgcolor - foreground and background color values
+    """
     color, bgcolor = None, None
     if loglevel == LogLevels.WARN:
         color = ColorModes.WARN
@@ -35,13 +54,14 @@ class Driver:
     """
     Driver class is an interface for running the log flow in a sequential manner
     """
+
     def __init__(self, loglevel, configs) -> None:
         """
         Constructor
 
         Args:
             loglevel [string] : Log Level for the log
-            config [dict] : the logsmith configuration 
+            config [dict] : the logsmith configuration
         """
         self.monitorConfigs = configs.monitorConfigs
         self.console_only = configs.console_only
@@ -81,7 +101,7 @@ class Driver:
 
         loglevel = (
             String.Format(text=self.loglevel)
-            .fit()
+            .fit(width=8)
             .enclose(start="[", end="]")
             .finalize()
         )
