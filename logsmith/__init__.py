@@ -1,1 +1,1 @@
-from logsmith.logSmith import log
+from logsmith.logsmith import Logsmith, log
